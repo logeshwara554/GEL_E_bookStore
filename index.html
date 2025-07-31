@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empathy E-Books | Choose Language</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/lucide@latest/dist/umd/lucide.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+body {
+  background-image: url('large_center.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+    header {
+      text-align: center;
+      padding: 2rem;
+    }
+    .language-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 250px);
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+    .language-cards .center-card {
+      grid-column: 1 / span 2;
+      display: flex;
+      justify-content: center;
+    }
+.card {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1rem;
+  box-shadow:
+    0 0 10px rgba(255, 165, 0, 0.6),
+    0 0 20px rgba(255, 140, 0, 0.4),
+    0 0 30px rgba(70, 130, 180, 0.3);
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow:
+        0 0 15px rgba(255, 165, 0, 0.8),
+        0 0 25px rgba(255, 140, 0, 0.6),
+        0 0 35px rgba(70, 130, 180, 0.4);
+    }
+    .card h3 {
+      font-size: 1.5rem;
+    }
+    .card .icon {
+      font-size: 2rem;
+      color: #ff7f50;
+      margin-bottom: 0.5rem;
+    }
+    footer {
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+      padding: 2rem;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      margin-top: auto;
+    }
+
+@media (max-width: 600px) {
+  .language-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+.card:focus {
+  outline: 3px solid #ffa500;
+}
+footer {
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
+}
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Empathy E-Book Store</h1>
+    <p>Select Your Language to Continue</p>
+  </header>
+
+  <div class="language-cards">
+      <div class="card" role="button" tabindex="0" onclick="location.href='english.html'">
+         <div class="icon" data-lucide="globe"></div>
+      <h3>English</h3>
+    </div>
+    <div class="card" onclick="location.href='tamil.html'">
+         <div class="icon" data-lucide="coffee"></div>
+      <h3>Tamil</h3>
+    </div>
+    <div class="card" onclick="location.href='hindi.html'">
+         <div class="icon" data-lucide="layout-template"></div>
+      <h3>Hindi</h3>
+    </div>
+    <div class="card" onclick="location.href='french.html'">
+         <div class="icon" data-lucide="music"></div>
+      <h3>French</h3>
+    </div>
+    <div class="center-card">
+      <div class="card" onclick="location.href='spanish.html'">
+         <div class="icon" data-lucide="code"></div>
+        <h3>Spanish</h3>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <h2>Contact Us</h2>
+    <p>Email: support@empathybooks.com</p>
+    <p>Phone: +91-9876543210</p>
+    <p>Follow us on social media @EmpathyBooks</p>
+  </footer>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  window.onload = () => {
+    lucide.createIcons();
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          card.click();
+        }
+      });
+    });
+  };
+</script>
+
+
+</body>
+</html>
