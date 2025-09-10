@@ -87,12 +87,70 @@ footer {
   background: linear-gradient(to right, #fdfbfb, #ebedee);
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-left h2 {
+  font-size: 1.5rem;
+  color: white;
+  margin: 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  font-size: 0.95rem;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  background: #ff4d4f;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #e03e3f;
+}
+
 
   </style>
 </head>
 <body>
+
+<nav class="navbar">
+  <div class="nav-left">
+    <h2>GEL  E-Books</h2>
+  </div>
+  <div class="nav-right">
+    <span class="user-info">Logged in as: <strong id="userEmail">Loading...</strong></span>
+    <button class="logout-btn" onclick="firebase.auth().signOut().then(() => location.href = 'login.html')">
+      Logout
+    </button>
+  </div>
+</nav>
+
   <header>
-    <h1>Empathy E-Book Store</h1>
+    <h1>GEL E-Book Store</h1>
     <p>Select Your Language to Continue</p>
   </header>
 
@@ -123,10 +181,48 @@ footer {
 
   <footer>
     <h2>Contact Us</h2>
-    <p>Email: support@empathybooks.com</p>
-    <p>Phone: +91-9876543210</p>
-    <p>Follow us on social media @EmpathyBooks</p>
+    <p>Email: logeshwara554@gmail.com</p>
+    <p>Phone: +91 9361947452</p>
+    <p>Follow us on social media @its_loki_time</p>
   </footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDhkpBQqf4Gr6F7eAxDBKPZAWq13eC25mE",
+    authDomain: "gelbooks.firebaseapp.com",
+    projectId: "gelbooks",
+    storageBucket: "gelbooks.firebasestorage.app",
+    messagingSenderId: "761506545700",
+    appId: "1:761506545700:web:5ca248d05aa67cc1c018b1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (!user) {
+    window.location.href = 'login.html';
+  } else {
+    document.getElementById("userEmail").innerText = user.email;
+  }
+});
+
+</script>
+
+onclick="setLanguageAndRedirect('english.html')"
+
+<script>
+function setLanguageAndRedirect(url) {
+  const userEmail = document.getElementById('userEmail').innerText;
+  localStorage.setItem('userEmail', userEmail);
+  // Optional: set default mode
+  localStorage.setItem('mode', 'buyer');
+  location.href = url;
+}
+</script>
+
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
