@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forgot Password</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #222;
+      color: white;
+    }
+
+    nav .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    nav .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    nav .menu {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav .menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav .icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* RESPONSIVE NAV */
+    @media screen and (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        background: #333;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 10px;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* FORM */
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .container input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .container button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <img src="logo.png" alt="Logo" />
+      <span>MyStore</span>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="menu" id="navMenu">
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+    <div class="icons">
+      <i class="fas fa-shopping-cart"></i>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Forgot Password</h2>
+    <input type="email" id="resetEmail" placeholder="Enter your email" />
+    <button onclick="sendResetLink()">Send Reset Link</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase Config (replace with your config)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function sendResetLink() {
+      const email = document.getElementById("resetEmail").value;
+      if (!email) {
+        alert("Please enter your email.");
+        return;
+      }
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+          alert("Reset link sent!");
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    }
+
+    function toggleMenu() {
+      document.getElementById("navMenu").classList.toggle("show");
+    }
+  </script>
+</body>
+</html>
