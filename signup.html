@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Empathy E-Books</title>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+    .box {
+      background: rgba(0,0,0,0.3);
+      padding: 2rem;
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      width: 300px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background: orange;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Sign Up</h2>
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button onclick="signUp()">Create Account</button>
+  <p class="error" id="errorMsg"></p>
+  <p>Already have an account? <a href="login.html" style="color: yellow;">Login here</a></p>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDhkpBQqf4Gr6F7eAxDBKPZAWq13eC25mE",
+    authDomain: "gelbooks.firebaseapp.com",
+    projectId: "gelbooks",
+    storageBucket: "gelbooks.appspot.com",
+    messagingSenderId: "761506545700",
+    appId: "1:761506545700:web:5ca248d05aa67cc1c018b1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  async function signUp() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorMsg = document.getElementById('errorMsg');
+
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      alert('Account created!');
+      window.location.href = 'index.html';
+    } catch (error) {
+      errorMsg.textContent = error.message;
+    }
+  }
+</script>
+
+</body>
+</html>
