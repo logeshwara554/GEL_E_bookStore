@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📚 eBook Hub</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+  <style>
+:root {
+  --accent: #00e6e6;
+  --bg-dark: #0f2027;
+  --bg-medium: #203a43;
+  --bg-light: #2c5364;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.15);
+  --hover-scale: scale(1.025);
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, var(--bg-dark), var(--bg-medium), var(--bg-light));
+  color: #fff;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+#userProfile {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* Input group styling */
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.input-group > * {
+  flex: 1 1 280px;
+  min-width: 220px;
+}
+
+/* General input styling */
+input, textarea, select, button {
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: #151515;
+  color: white;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* Button style */
+button {
+  background-color: var(--accent);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+}
+
+button:hover {
+  filter: brightness(1.1);
+  transform: var(--hover-scale);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Search bar */
+#searchInput {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #151515;
+  color: white;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+/* Book grid layout */
+.book-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.book-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.book-card:hover {
+  transform: var(--hover-scale);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.book-title {
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.book-category {
+  display: inline-block;
+  background: var(--accent);
+  color: black;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 12px;
+  margin-bottom: 0.6rem;
+}
+
+.book-meta {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin-bottom: 0.8rem;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.actions button {
+  flex: 1;
+  font-size: 0.95rem;
+  padding: 0.6rem;
+}
+
+#loadMoreBtn {
+  display: block;
+  margin: 3rem auto 0;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+/* Navigation Bar */
+.navbar {
+  width: 100%;
+  background: rgba(25, 25, 25, 0.8);
+  color: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-size: 1.3rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#user-info {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+#logoutBtn {
+  background-color: var(--accent);
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#logoutBtn:hover {
+  background-color: #00ccc2;
+}
+
+#userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+  </style>
+</head>
+<body>
+
+<nav style="display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background-color: #333; color: white;">
+  <div style="font-size: 1.2rem;">📚 BookShare</div>
+  <div id="user-info" style="display: flex; align-items: center; gap: 10px;">
+    <img id="userAvatar" src="" alt="User Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; display: none;">
+    <span id="userProfile">Loading...</span>
+    <button id="logoutBtn" style="margin-left: 10px; padding: 5px 10px; background-color: crimson; border: none; border-radius: 5px; color: white; cursor: pointer;">Logout</button>
+  </div>
+</nav>
+
+
+  <div class="container">
+    <h1>📚 eBook Hub</h1>
+    <div id="userProfile">Loading user...</div>
+
+    <div class="input-group">
+      <input type="text" id="title" placeholder="Book Title" />
+      <textarea id="content" placeholder="Book Content"></textarea>
+      <select id="category">
+        <option value="Fiction">Fiction</option>
+        <option value="Non-fiction">Non-fiction</option>
+        <option value="Technology">Technology</option>
+        <option value="Health">Health</option>
+        <option value="Other">Other</option>
+      </select>
+      <button onclick="addBook()">➕ Add Book</button>
+    </div>
+
+    <input type="text" id="searchInput" placeholder="Search by title..." oninput="renderBooks()" />
+
+    <div class="book-grid" id="bookList"></div>
+    <button id="loadMoreBtn" onclick="loadMoreBooks()">⬇ Load More</button>
+  </div>
+
+  <!-- Firebase + Toastr -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script>
+const firebaseConfig = {
+    apiKey: "AIzaSyDhkpBQqf4Gr6F7eAxDBKPZAWq13eC25mE",
+    authDomain: "gelbooks.firebaseapp.com",
+    projectId: "gelbooks",
+    storageBucket: "gelbooks.firebasestorage.app",
+    messagingSenderId: "761506545700",
+    appId: "1:761506545700:web:5ca248d05aa67cc1c018b1"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let books = [], visibleCount = 6, currentUser = null;
+
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
+
+auth.onAuthStateChanged(user => {
+  const userInfo = document.getElementById("user-info");
+  const userProfile = document.getElementById("userProfile");
+  const userAvatar = document.getElementById("userAvatar");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (user) {
+    currentUser = user;
+    const nameOrEmail = user.displayName || user.email;
+    userProfile.textContent = `Welcome, ${nameOrEmail}`;
+
+    // Show profile picture if available
+    if (user.photoURL) {
+      userAvatar.src = user.photoURL;
+      userAvatar.style.display = "block";
+    } else {
+      userAvatar.style.display = "none"; // fallback if no avatar
+    }
+
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    });
+
+    fetchBooks();
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+
+
+function addBook() {
+  const title = document.getElementById("title").value.trim();
+  const content = document.getElementById("content").value.trim();
+  const category = document.getElementById("category").value;
+
+  if (!title || !content) return toastr.warning("Please fill in all fields");
+
+  db.collection("books").add({
+    title,
+    content,
+    category,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    userId: currentUser.uid,
+    uploadedBy: currentUser.uid,
+    userName: currentUser.displayName || currentUser.email,
+    likes: 0,
+    likedBy: []
+  }).then(() => {
+    toastr.success("Book added!");
+    document.getElementById("title").value = "";
+    document.getElementById("content").value = "";
+    fetchBooks();
+  });
+}
+
+function fetchBooks() {
+  db.collection("books").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+    books = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    renderBooks();
+  });
+}
+
+function renderBooks() {
+  const list = document.getElementById("bookList");
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  list.innerHTML = "";
+
+  let filtered = books.filter(b => b.title.toLowerCase().includes(search));
+  filtered.slice(0, visibleCount).forEach(book => {
+    const div = document.createElement("div");
+    div.className = "book-card";
+    div.innerHTML = `
+      <div class="book-title">${book.title}</div>
+      <div class="book-category">${book.category}</div>
+      <div class="book-meta">By: ${book.userName}</div>
+      <p>${book.content}</p>
+      <div class="actions">
+        <button onclick="likeBook('${book.id}')">❤️ ${book.likes}</button>
+        ${book.uploadedBy === currentUser.uid ? `<button onclick="deleteBook('${book.id}')">🗑 Delete</button>` : ""}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function loadMoreBooks() {
+  visibleCount += 6;
+  renderBooks();
+}
+
+function deleteBook(id) {
+  db.collection("books").doc(id).get().then(doc => {
+    if (doc.exists && doc.data().uploadedBy === currentUser.uid) {
+      db.collection("books").doc(id).delete().then(() => toastr.info("Book deleted"));
+    } else {
+      toastr.error("You're not allowed to delete this.");
+    }
+  });
+}
+
+function likeBook(id) {
+  const userId = currentUser.uid;
+  const book = books.find(b => b.id === id);
+  const bookRef = db.collection("books").doc(id);
+
+  if (!book || book.likedBy?.includes(userId)) {
+    return toastr.info("You already liked this.");
+  }
+
+  bookRef.update({
+    likes: firebase.firestore.FieldValue.increment(1),
+    likedBy: firebase.firestore.FieldValue.arrayUnion(userId)
+  }).then(() => {
+    toastr.success("Thanks for liking!");
+  });
+}
+
+  </script>
+</body>
+</html>

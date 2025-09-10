@@ -1,0 +1,19 @@
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDhkpBQqf4Gr6F7eAxDBKPZAWq13eC25mE",
+    authDomain: "gelbooks.firebaseapp.com",
+    projectId: "gelbooks",
+    storageBucket: "gelbooks.firebasestorage.app",
+    messagingSenderId: "761506545700",
+    appId: "1:761506545700:web:5ca248d05aa67cc1c018b1"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>

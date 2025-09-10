@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>English Cooking eBooks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <style>
+    * { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1950&q=80') no-repeat center center / cover;
+  background-attachment: fixed; /* 👈 This makes it static */
+  color: #fff;
+}
+html, body {
+  height: 100%;
+}
+    .hero {
+      text-align: center;
+      padding: 100px 20px 60px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .hero h1 {
+      font-size: 3rem;
+      color: #FFD700;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: auto;
+      margin-bottom: 30px;
+    }
+    .hero .download-btn {
+      font-size: 1rem;
+      padding: 12px 24px;
+    }
+    .section {
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #FFD700;
+    }
+    .card-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .card {
+      width: 300px;
+      height: 350px;
+      background: transparent;
+      perspective: 1000px;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-align: center;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    .card i {
+      width: 40px;
+      height: 40px;
+      color: #FFD700;
+      margin-bottom: 10px;
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .download-btn {
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .download-btn:hover {
+      background-color: #e6c200;
+    }
+    .search-bar {
+      max-width: 400px;
+      margin: auto;
+      margin-bottom: 20px;
+      display: flex;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px 0 0 8px;
+    }
+    .search-bar button {
+      padding: 10px 16px;
+      background-color: #FFD700;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 2px solid #FFD700;
+      color: #FFD700;
+      padding: 8px 16px;
+      margin: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .tab-btn:hover, .tab-btn.active {
+      background: #FFD700;
+      color: #000;
+    }
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 10px; }
+      .card { width: 90%; }
+      .section h2 { font-size: 2rem; }
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+      padding: 2rem;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      margin-top: auto;
+    }
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-left h2 {
+  font-size: 1.5rem;
+  color: white;
+  margin: 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  font-size: 0.95rem;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  background: #ff4d4f;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #e03e3f;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  flex-wrap: wrap;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.nav-left h2 {
+  font-size: 1.5rem;
+  color: white;
+  margin: 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.logout-btn, .icon-btn {
+  padding: 0.5rem 1rem;
+  background: #ff4d4f;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #e03e3f;
+}
+
+.icon-btn {
+  background: transparent;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  color: white;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* Responsive for mobile */
+@media screen and (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  #navItems {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  #navItems.show {
+    display: flex;
+  }
+
+  .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .navbar {
+    align-items: flex-start;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div id="preloader">
+    <div class="loader-text">Loading...</div>
+  </div>
+
+  <nav class="navbar">
+  <div class="nav-left">
+    <img src="logo.png" alt="Logo" class="logo" />
+    <h2>GEL E-Books</h2>
+  </div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <div class="nav-right" id="navItems">
+    <select id="modeSwitcher" onchange="switchMode()" style="padding: 6px; border-radius: 6px; border: none; font-weight: bold;">
+     <option value="buyer">Buyer Mode</option>
+     <option value="seller">Seller Mode</option>
+    </select>
+
+    <span class="user-info">Logged in as: <strong id="userEmail">Loading...</strong></span>
+    <button class="icon-btn" title="Cart">🛒</button>
+    <button class="icon-btn" title="Notifications">🔔</button>
+    <button class="logout-btn" onclick="firebase.auth().signOut().then(() => location.href = 'login.html')">
+      Logout
+    </button>
+  </div>
+</nav>
+
+  <div class="section">
+    <h2>Search Recipes</h2>
+    <div class="search-bar">
+<input type="text" id="searchInput" placeholder="Search eBooks..." oninput="searchCards()">
+      <button onclick="searchCards()">Search</button>
+    </div>
+  </div>
+
+
+  <div class="section" id="cards">
+    <h2>South Indian</h2>
+    <div class="card-container">
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Sambar Saatham</h3>
+            <p>Kaaramana kolambu.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat cards as needed -->
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Rasam Saatham</h3>
+            <p>Melagu Raasam</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Dosa Idly</h3>
+            <p>Maavu items.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="cards">
+    <h2>Japanese</h2>
+    <div class="card-container">
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Pancakes Guide</h3>
+            <p>Fluffy pancakes and toppings.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat cards as needed -->
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Ramen Noodles</h3>
+            <p>Fluffy pancakes and toppings.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Rice Cake</h3>
+            <p>Fluffy pancakes and toppings.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="cards">
+    <h2>Chinese</h2>
+    <div class="card-container">
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Snacks</h3>
+            <p>Fluffy pancakes and toppings.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat cards as needed -->
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>10 min Meals</h3>
+            <p>Fluffy pancakes and toppings.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="card" data-aos="fade-up">
+        <div class="card-inner">
+          <div class="card-front">
+            <i title="sunny" data-lucide="sunny"></i>
+            <h3>Curry</h3>
+            <p>Fluffy pancakes and toppings.</p>
+          </div>
+          <div class="card-back">
+            <p>Step-by-step guide to perfect pancakes every time!</p>
+            <button class="download-btn">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="hero" data-aos="fade-up">
+    <h1>Cook. Learn. Enjoy.</h1>
+    <p>Download our exclusive cooking eBooks and become a kitchen expert. Whether it's breakfast, lunch, or dinner – we’ve got you covered.</p>
+    <a href="#contact"><button class="download-btn">Get in Touch</button></a>
+  </div>
+
+<div class="section" id="sellerPanel" style="display: none;">
+  <h2>Upload Your eBook</h2>
+  <form id="uploadForm" style="max-width: 500px; margin: auto;">
+    <input type="text" id="bookTitle" placeholder="Book Title" required style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:none;">
+    <textarea id="bookDesc" placeholder="Short Description" rows="3" required style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:none;"></textarea>
+    <input type="text" id="bookCategory" placeholder="Category (e.g. South Indian)" required style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:none;">
+    <input type="number" id="bookPrice" placeholder="Price (INR)" required style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:none;">
+    <input type="file" id="bookFile" accept="application/pdf" required style="margin:10px 0;">
+    <button type="submit" class="download-btn">Upload Book</button>
+  </form>
+</div>
+
+<div class="section" id="myBooks" style="display:none;">
+  <h2>My Uploaded eBooks</h2>
+  <div class="card-container" id="myBooksList"></div>
+</div>
+
+
+
+
+<div class="section" id="testimonials" data-aos="fade-up">
+  <h2 style="color:#FFD700;">Testimonials</h2>
+  <div class="card-container">
+    <div class="card">
+      <p>"These eBooks transformed my cooking! So clear and helpful."</p>
+      <strong>– Aarti S.</strong>
+    </div>
+    <div class="card">
+      <p>"Easy to follow and super tasty results. I highly recommend."</p>
+      <strong>– James L.</strong>
+    </div>
+    <div class="card">
+      <p>"Love the vegan recipes. Simple and delicious!"</p>
+      <strong>– Priya D.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Section -->
+<div class="section" id="contact">
+  <h2>Contact Us</h2>
+  <form action="https://formspree.io/f/mexample" method="POST" style="max-width: 500px; margin: auto;" data-aos="fade-up">
+    <input type="text" name="name" placeholder="Your Name" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: none;">
+    <input type="email" name="email" placeholder="Your Email" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: none;">
+    <textarea name="message" placeholder="Your Message" rows="5" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: none;"></textarea>
+    <button type="submit" class="download-btn">Send Message</button>
+  </form>
+</div>
+
+  <footer>
+    <h2>Contact Us</h2>
+    <p>Email: logeshwara554@gmail.com</p>
+    <p>Phone: +91 9361947452</p>
+    <p>Follow us on social media @its_loki_time</p>
+    <p>© 2025 GEL eBooks. All rights reserved.</p>
+  </footer>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDhkpBQqf4Gr6F7eAxDBKPZAWq13eC25mE",
+    authDomain: "gelbooks.firebaseapp.com",
+    projectId: "gelbooks",
+    storageBucket: "gelbooks.firebasestorage.app",
+    messagingSenderId: "761506545700",
+    appId: "1:761506545700:web:5ca248d05aa67cc1c018b1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (!user) {
+    window.location.href = 'login.html';
+  } else {
+    document.getElementById("userEmail").innerText = user.email;
+
+    const db = firebase.firestore();
+    const userRef = db.collection('users').doc(user.uid);
+    const doc = await userRef.get();
+
+    if (!doc.exists) {
+      // First login, ask role
+      const role = prompt("Are you a seller or buyer?").toLowerCase();
+      await userRef.set({ email: user.email, role });
+    }
+
+    const userData = (await userRef.get()).data();
+    window.userRole = userData.role;
+    window.userId = user.uid;
+
+    // Set dropdown based on role
+    document.getElementById("modeSwitcher").value = userRole;
+    switchMode(); // Activate proper view
+  }
+});
+
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const title = document.getElementById("bookTitle").value;
+  const desc = document.getElementById("bookDesc").value;
+  const category = document.getElementById("bookCategory").value;
+  const price = document.getElementById("bookPrice").value;
+  const file = document.getElementById("bookFile").files[0];
+
+  if (!file || file.type !== "application/pdf") {
+    alert("Please upload a valid PDF file.");
+    return;
+  }
+
+  const storageRef = firebase.storage().ref();
+  const fileRef = storageRef.child(`ebooks/${Date.now()}-${file.name}`);
+  await fileRef.put(file);
+  const downloadURL = await fileRef.getDownloadURL();
+
+  const db = firebase.firestore();
+  await db.collection("books").add({
+    title,
+    desc,
+    category,
+    price,
+    fileUrl: downloadURL,
+    userId: window.userId,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  alert("eBook uploaded!");
+  document.getElementById("uploadForm").reset();
+});
+
+
+
+</script>
+
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    AOS.init({ once: true });
+    lucide.createIcons();
+    window.addEventListener('load', () => {
+      const preloader = document.getElementById('preloader');
+      preloader.classList.add('fade-out');
+      setTimeout(() => preloader.style.display = 'none', 1000);
+    });
+
+function searchCards() {
+  const inputValue = document.getElementById('searchInput').value.toLowerCase();
+
+  const sections = document.querySelectorAll('.section');
+
+  sections.forEach(section => {
+    const cardContainer = section.querySelector('.card-container');
+    if (!cardContainer) return;
+
+    const cards = cardContainer.querySelectorAll('.card');
+    let anyVisible = false;
+
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      if (text.includes(inputValue)) {
+        card.style.display = 'block';
+        anyVisible = true;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Hide the section if no cards are visible
+    section.style.display = anyVisible ? 'block' : 'none';
+  });
+}
+</script>
+
+
+<script>
+  function toggleMenu() {
+    const navItems = document.getElementById('navItems');
+    navItems.classList.toggle('show');
+  }
+</script>
+<script>
+let mode = "buyer";
+
+function switchMode() {
+  mode = document.getElementById('modeSwitcher').value;
+  document.getElementById('sellerPanel').style.display = mode === "seller" ? "block" : "none";
+  document.getElementById('myBooks').style.display = mode === "seller" ? "block" : "none";
+
+  const allSections = document.querySelectorAll('.section');
+  allSections.forEach(section => {
+    if (!["sellerPanel", "contact", "testimonials", "myBooks"].includes(section.id)) {
+      section.style.display = mode === "seller" ? "none" : "block";
+    }
+  });
+
+  if (mode === "seller") {
+    loadMyBooks();
+  }
+}
+
+
+// Handle form submission
+document.getElementById("uploadForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const title = document.getElementById("bookTitle").value;
+  const desc = document.getElementById("bookDesc").value;
+  const category = document.getElementById("bookCategory").value;
+  const price = document.getElementById("bookPrice").value;
+  const file = document.getElementById("bookFile").files[0];
+
+  if (!file || file.type !== "application/pdf") {
+    alert("Please upload a valid PDF file.");
+    return;
+  }
+
+  const newCardHTML = `
+    <div class="card" data-aos="fade-up">
+      <div class="card-inner">
+        <div class="card-front">
+          <i title="pdf" data-lucide="file-text"></i>
+          <h3>${title}</h3>
+          <p>${desc}</p>
+        </div>
+        <div class="card-back">
+          <p>Price: ₹${price}</p>
+          <a href="${URL.createObjectURL(file)}" download="${title}.pdf">
+            <button class="download-btn">Download</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add to the correct section or create one
+  const sectionId = category.replace(/\s+/g, '').toLowerCase(); // e.g. "South Indian" → "southindian"
+  let categorySection = document.getElementById(`cat-${sectionId}`);
+
+  if (!categorySection) {
+    categorySection = document.createElement('div');
+    categorySection.className = "section";
+    categorySection.id = `cat-${sectionId}`;
+    categorySection.innerHTML = `<h2>${category}</h2><div class="card-container"></div>`;
+    document.body.insertBefore(categorySection, document.getElementById("testimonials"));
+  }
+
+  const container = categorySection.querySelector(".card-container");
+  container.innerHTML += newCardHTML;
+
+  // Reset form
+  document.getElementById("uploadForm").reset();
+  AOS.refresh(); // Refresh animations
+});
+
+async function loadMyBooks() {
+  const db = firebase.firestore();
+  const snapshot = await db.collection("books").where("userId", "==", window.userId).get();
+
+  const myBooksList = document.getElementById("myBooksList");
+  myBooksList.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">
+          <h3>${data.title}</h3>
+          <p>${data.desc}</p>
+        </div>
+        <div class="card-back">
+          <p>₹${data.price}</p>
+          <a href="${data.fileUrl}" download><button class="download-btn">Download</button></a>
+          <button class="download-btn" onclick="deleteBook('${doc.id}')">Delete</button>
+        </div>
+      </div>
+    `;
+    myBooksList.appendChild(card);
+  });
+
+  document.getElementById("myBooks").style.display = "block";
+}
+
+async function deleteBook(bookId) {
+  if (confirm("Delete this book?")) {
+    const db = firebase.firestore();
+    await db.collection("books").doc(bookId).delete();
+    loadMyBooks();
+  }
+}
+
+</script>
+
+
+</body>
+</html>
